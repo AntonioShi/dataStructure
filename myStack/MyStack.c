@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "MyStack.h"
 
-int main(void)
+int main0920(void)
 {
     int i, getMember;
     SeqStack myStack;
@@ -22,6 +22,11 @@ int main(void)
     for (i = 0; i < 100; ++i)
     {
         if (StackPop(&myStack, &getMember))
+        {
+            printf("%d ", getMember);
+        }
+
+        if (StackTop(&myStack, &getMember))
         {
             printf("%d\n", getMember);
         }
