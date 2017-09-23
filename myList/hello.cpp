@@ -60,28 +60,34 @@ int DLNodeInsert(DLNode *head, int i, DataType s)
 }
 
 
-int DLNodeDelete(DLNode *head, int i, DataType *s)
+/*
+ * 1.一般除循环外，不要用ｉｊｋｌ
+ * 2.定义指针时要同时赋初值，起码是NULL，决不允许有野指针
+ * 3.
+ * */
+int DLNodeDelete(DLNode *head, int n, DataType *s)
 {
-    DLNode *p;
-    int j = 0;
+    DLNode *p = head->next;//指向当前处理结点
+    DLNode *q = head;      //指向当前处理指针的上一个结点
 
-    p = head->next;
-    while (p != NULL && j < i)
+    int i;
+
+    //遍历找要处理的结点
+    for (i = 0; p != NULL && i < n; i++)
     {
+        q = p;
         p = p->next;
-        j++;
     }
 
-    if (j != i)
+    //找不到的情况
+    if (i != n)
     {
-        printf("参数错误\n");
+        printf("error!!!\n");
         return 0;
     }
 
-    *s = p->data;
-    p->prior = p->next;
-    p->next->prior = p->prior;
-
+    //找到的情况
+    q->next = p->next;
     free(p);
 
     return 1;
@@ -169,7 +175,6 @@ int main()
     }
     printf("\n");
 
-    printf("%d\n\n\n\n",DLNodeDelete(head, 4, &s));
     n = DLNodeLength(head);
     printf("n = %4d\n", n);
 
