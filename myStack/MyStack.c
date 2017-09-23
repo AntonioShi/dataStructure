@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "MyStack.h"
 
+//测试用的主函数
 int main0920(void)
 {
     int i, getMember;
@@ -80,7 +81,7 @@ int StackPop(SeqStack * pStack, DataType * getMember)
 
 }
 
-
+//取栈顶元素函数
 int StackTop(SeqStack * pStack, DataType * getMember)
 {
     if (!StackEmpty(pStack))
