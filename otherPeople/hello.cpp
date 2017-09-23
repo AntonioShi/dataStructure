@@ -150,7 +150,7 @@ int DLNodeGet(DLNode *head, int i, DataType *s)
     return 1;
 }
 
-int main()
+int main0922()
 {
     //定义并初始化双向链表
     DLNode *head;
