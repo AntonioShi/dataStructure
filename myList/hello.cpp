@@ -175,6 +175,7 @@ int main()
     }
     printf("\n");
 
+    DLNodeDelete(head, 4, &s);
     n = DLNodeLength(head);
     printf("n = %4d\n", n);
 
