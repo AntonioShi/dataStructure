@@ -79,18 +79,17 @@ int DLNodeDelete(DLNode *head, int n, DataType *s)
         p = p->next;
     }
 
-    //找不到的情况
-    if (i != n)
+    if (p == NULL)//找不到的情况
     {
         printf("error!!!\n");
         return 0;
     }
-
-    //找到的情况
-    q->next = p->next;
-    free(p);
-
-    return 1;
+    else       //找到的情况
+    {
+        q->next = p->next;
+        free(p);
+        return 1;
+    }
 }
 
 int DLNodeLength(DLNode *head)
