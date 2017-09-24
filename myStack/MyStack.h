@@ -6,7 +6,7 @@
 #define DATASTRUCTURE_MYSTACK_H
 
 #define MaxStackSize 100
-typedef int DataType;//栈中元素数据
+typedef char DataType;//栈中元素数据
 
 //栈的结构体
 typedef struct
