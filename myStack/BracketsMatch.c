@@ -10,7 +10,7 @@
 
 int ExpIsCorrect(char exp[], int n);//检验括号匹配的函数
 
-int main0924(void)
+int main092420(void)
 {
     int n[4], YesOrNo[4];
     char a[] = "(())asdf{[)[[[][][090()09((]}"; //左右括号配对次序不正确
@@ -68,46 +68,17 @@ int ExpIsCorrect(char exp[], int n)
             if (StackEmpty(&myStack)) return 0;//右边多于左边时
             StackPop(&myStack, &GetCh);
 
-            switch (GetCh)
+            if ((GetCh=='{'&&exp[i]=='}') || (GetCh=='['&&exp[i]==']') || (GetCh=='('&&exp[i]==')'))
             {
-                case '{':
-                    if (exp[i] == '}')
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                case '[':
-                    if (exp[i] == ']')
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                case '(':
-                    if (exp[i] == ')')
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
+                continue;
+            }
+            else
+            {
+                return 0;
             }
 
         }
     }
 
-    if (StackEmpty(&myStack))
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;//左边多于右边时
-    }
+    return StackEmpty(&myStack);
 }
