@@ -9,7 +9,7 @@
  * */
 
 #include <malloc.h>
-#include "MyList.h"
+#include "../../myList/MyList.h"
 
 void MyTwoWayMergeAlgorithm(SLNode * head1, SLNode * head2, SLNode * head3);//关于我的二路归并算法的函数
 

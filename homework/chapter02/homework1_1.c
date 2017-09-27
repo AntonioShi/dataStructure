@@ -7,7 +7,7 @@
  * 如果链表中没有数据域值为a的结点，则把新结点插入到表尾
  * */
 
-#include "MyList.h"
+#include "../../myList/MyList.h"
 #include <malloc.h>
 
 void MyAdd(SLNode * head, DataType a , DataType newData);//在单链表中数据域值为a的结点之后，　插入一个新结点
