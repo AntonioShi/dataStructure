@@ -2,77 +2,142 @@
 // Created by niracler on 17-9-25.
 //
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>  //为了用isdigit(char )判断字符是否是数字
 #include "MyStack.h"
 
-int InfixToSuffix(char exp[], int n);//中缀表达式转化为后缀表达式的函数
+int is_operator(char symbol);//判断运算符的函数
+int precedence(char symbol);//判断各种运算符优先级的函数
+void InfixToPostfix(char infix_exp[], char postfix_exp[]);//中缀转后缀的函数
 
-int main(void)
+int main092720(void)
 {
-    //请给我一个表达式
-    char expression[500];
+    char infix[100], postfix[100];         //声明前缀表达式与后缀表达式的字符串
 
-    //原来这个不能接收空格，，，
-    scanf("%s", expression);
+    printf("\n请输入中缀表达式 : ");
+    scanf("%s", infix);
 
-    //解决问题
-    if (!InfixToSuffix(expression, strlen(expression)))
-    {
-        printf("错误，您的表达式有问题！！！");
-    }
-
-    //输出
-    //printf("%s", expression);
+    InfixToPostfix(infix,postfix);
+    printf("后缀表达式为: ");
+    puts(postfix);
 
     return 0;
 }
 
-//中缀表达式转化为后缀表达式的函数
-//参数：表达式，表达式的长度
-//返回值：1.成功　0.失败
-int InfixToSuffix(char exp[], int n)
+//判断运算符的函数
+//参数：你要判断的字符
+//返回值：是1，不是0
+int is_operator(char symbol)
 {
-    int i, j = 0, k = 0, num[200];           //循环控制
-    char str[20];
-    char getch;
-    SeqStack myStack;//先来一个栈吧
-
-    StacKInitiate(&myStack);
-
-    //遍历表达式
-    for (i = 0; i < n; ++i)
+    if (symbol == '^' || symbol == '*' || symbol == '/' || symbol == '+' || symbol == '-')
     {
-        //各种数字记录
-        if (exp[i] >= '0' && exp[i] <= '9')
-        {
-            str[j] = exp[i];
-            j++;
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
 
-            //下一个不是，则转化为字符串
-            if (exp[i + 1] < '0' || exp[i + 1] > '9')
+//判断各种运算符优先级的函数
+//参数：你要判断的字符
+//返回值：优先级高度
+int precedence(char symbol)
+{
+    if (symbol == '^')
+    {
+        return (3);
+    }
+    else if (symbol == '*' || symbol == '/')
+    {
+        return (2);
+    }
+    else if (symbol == '+' || symbol == '-')
+    {
+        return (1);
+    }
+    else
+    {
+        return (0);
+    }
+}
+
+//中缀转后缀的函数
+//参数：前缀，　后缀
+void InfixToPostfix(char infix_exp[], char postfix_exp[])
+{
+    int i = 0, j = 0;//循环控制
+    char item;       //当前操作元素
+    char x;          //下一个操作元素呢！！！
+    SeqStack myStack;//定义一个栈
+
+    StackPush(&myStack, '(');            //将一个＇(＇放到栈底
+    strcat(infix_exp, ")");              //将一个＇）＇放到后缀表达式的最后
+
+    //开始遍历中缀表达式
+    item = infix_exp[i];
+    while (item != '\0')
+    {
+        //看见左括号进栈
+        if (item == '(')
+        {
+            StackPush(&myStack, item);
+        }
+            //数字进后缀表达式
+        else if (isdigit(item) || isalpha(item))
+        {
+            postfix_exp[j] = item;
+            j++;
+        }
+            //看见运算符，出栈
+        else if (is_operator(item) == 1)
+        {
+            StackPop(&myStack, &x);
+
+            //假如栈顶运算符的优先级大于当前运算符，则放进后缀表达式
+            while (is_operator(x) == 1 && precedence(x) >= precedence(item))
             {
-                str[j] = '\0';
-                j = 0;
-                num[k] = atoi(str);
-                printf("%d\n", num[k]);
-                k++;
+                postfix_exp[j] = x;
+                j++;
+                StackPop(&myStack, &x);
+            }
+            //将x,item放回去
+            StackPush(&myStack, x);
+            StackPush(&myStack, item);
+        }
+            //遇见右括号,那么在看见左括号前，入栈吧！！
+        else if (item == ')')
+        {
+            StackPop(&myStack, &x);
+            while (x != '(')
+            {
+                postfix_exp[j] = x;
+                j++;
+                StackPop(&myStack, &x);
             }
         }
-            //各种符号进栈
+            //非数字非括号，非运算符，那么就错了
         else
         {
-            StackPush(&myStack, exp[i]);
+            printf("\n无效的中缀表达式。\n");
+            getchar();
+            exit(1);
         }
+        i++;
+
+        item = infix_exp[i]; //下一个字符进入，再次开始循环
     }
 
-    while (!StackEmpty(&myStack))
+    //下面就是错误的表达式呢！！！
+    if (!StackEmpty(&myStack))
     {
-        StackPop(&myStack, &getch);
-        printf("%c ", getch);
+        printf("\n无效的中缀表达式。\n");
+        getchar();
+        exit(1);
     }
 
-    return 1;
+    postfix_exp[j] = '\0'; //在最后的最后,赋值上'\0'，表示结尾
+
 }
