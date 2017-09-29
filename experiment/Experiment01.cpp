@@ -48,12 +48,14 @@ int main(void)
     cin >> pol1;
     cin >> pol2;
 
+    cout << "排序前：" << endl;
     cout << pol1;        //输出
     cout << pol2;        //输出
 
     pol1.sort();          //排序
     pol2.sort();          //排序
 
+    cout << "排序后：" << endl;
     cout << pol1;        //输出
     cout << pol2;        //输出
 
@@ -80,6 +82,7 @@ istream &operator>>(istream &in, Polynomial &pol)
 {
     Item *pItem = &pol.head;
 
+    cout << 'p';
     while (in.peek() != '\n')
     {
         Item *newItem = new Item();//定义新结点
@@ -89,6 +92,7 @@ istream &operator>>(istream &in, Polynomial &pol)
         pItem->next = newItem;     //上家指下家
         pItem = newItem;           //当前指当前
     }
+    getchar();
 
     return in;
 }
