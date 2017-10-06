@@ -42,7 +42,7 @@ public:
     friend istream &operator>>(istream &in, Polynomial &pol);                 //① 多项式链表建立
 };
 
-int mainerty(void)
+int main789(void)
 {
     Polynomial pol1, pol2;//定义两个多项式
     cin >> pol1;
@@ -131,15 +131,15 @@ Polynomial Polynomial::operator+(Polynomial &pol)
     //二路归并算法
     while (p1->next != NULL && p2->next != NULL)
     {
-        p1 = p1->next, p2 = p2->next;
-
         //小的放在前
-        if (p1->index < p2->index)
+        if (p1->next->index < p2->next->index)
         {
+            p1 = p1->next;
             p = p1;
         }
         else
         {
+            p2 = p2->next;
             p = p2;
         }
 
