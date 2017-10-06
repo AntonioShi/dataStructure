@@ -42,7 +42,7 @@ public:
     friend istream &operator>>(istream &in, Polynomial &pol);                 //① 多项式链表建立
 };
 
-int main346(void)
+int mainerty(void)
 {
     Polynomial pol1, pol2;//定义两个多项式
     cin >> pol1;
@@ -59,9 +59,9 @@ int main346(void)
     cout << pol1;        //输出
     cout << pol2;        //输出
 
-    //Polynomial pol3 = pol1 + pol2;
-
-   // cout << pol3;
+    Polynomial pol3 = pol1 + pol2;
+    cout << "相加的结果:" << endl;
+    cout << pol3;
 
     return 0;
 }
@@ -82,7 +82,6 @@ istream &operator>>(istream &in, Polynomial &pol)
 {
     Item *pItem = &pol.head;
 
-    cout << 'p';
     while (in.peek() != '\n')
     {
         Item *newItem = new Item();//定义新结点
@@ -121,48 +120,61 @@ void Polynomial::sort()
 }
 
 //③ 多项式相加：实现两个多项式相加操作。操作生成一个新的多项式，原有的两个多项式不变，返回生成的多项式的头结点；
-//Polynomial Polynomial::operator+(Polynomial &pol)
-//{
-//    Polynomial newPol;
-//    Item * pItemPol = newPol;
-//    Item * p1 = &this->head;//1链的处理点
-//    Item * p2 = &pol.head;//2链的处理点
-//    Item * p = NULL;
-//
-//    for (; p1->next != NULL && p2->next != NULL ; )
-//    {
-//        p1 = p1->next, p2 = p2->next;
-//
-//        if (p1->index < p2->index)
-//        {
-//            Item *newItem = new Item();//定义新结点
-//            newItem->coefficient;//输入系数
-//            newItem->index;      //输入指数
-//            newItem->next = NULL;      //收尾
-//            pItem->next = newItem;     //上家指下家
-//            pItem = newItem;           //当前指当前;
-//        }
-//        else
-//        {
-//            ;
-//        }
-//    }
-//
-//    if(p1->next != NULL)
-//    {
-//        p = p1;
-//    }
-//    else
-//    {
-//        p = p2;
-//    }
-//
-//    while (p->next != NULL)
-//    {
-//        p = p->next;
-//        ;
-//    }
-//}
+Polynomial Polynomial::operator+(Polynomial &pol)
+{
+    Polynomial sumPol;//结果
+    Item * pItem = &sumPol.head;//指向结果的正在处理的结点
+    Item * p1 = &this->head;//1链的处理点
+    Item * p2 = &pol.head;//2链的处理点
+    Item * p = NULL;
+
+    //二路归并算法
+    while (p1->next != NULL && p2->next != NULL)
+    {
+        p1 = p1->next, p2 = p2->next;
+
+        //小的放在前
+        if (p1->index < p2->index)
+        {
+            p = p1;
+        }
+        else
+        {
+            p = p2;
+        }
+
+        Item *newItem = new Item();//定义新结点
+        newItem->coefficient = p->coefficient;//输入系数
+        newItem->index = p->index;      //输入指数
+        newItem->next = NULL;      //收尾
+        pItem->next = newItem;     //上家指下家
+        pItem = newItem;           //当前指当前;
+    }
+
+    if(p1->next != NULL)
+    {
+        p = p1;
+    }
+    else
+    {
+        p = p2;
+    }
+
+    while (p->next != NULL)
+    {
+        p = p->next;
+        Item *newItem = new Item();//定义新结点
+        newItem->coefficient = p->coefficient;//输入系数
+        newItem->index = p->index;      //输入指数
+        newItem->next = NULL;      //收尾
+        pItem->next = newItem;     //上家指下家
+        pItem = newItem;           //当前指当前
+    }
+
+    cout << sumPol;
+
+    return sumPol;
+}
 
 //④  多项式的输出；
 ostream &operator<<(ostream &out, Polynomial &pol)
@@ -187,5 +199,19 @@ ostream &operator<<(ostream &out, Polynomial &pol)
 //赋值号重载
 Polynomial &Polynomial::operator=(Polynomial &pol)
 {
+    Item * p1 = &this->head;//指向当前要处理的结点
+    Item * p2 = pol.head.next;//指向当前要处理的结点
 
+    //遍历链2
+    while (p2 != NULL)
+    {
+        //新建结点
+        p1->next = new Item();
+        p1 = p1->next;
+        p1->coefficient = p2->coefficient;//输入系数
+        p1->index = p2->index;      //输入指数
+        p1->next = NULL;      //收尾
+    }
+
+    return *this;
 }

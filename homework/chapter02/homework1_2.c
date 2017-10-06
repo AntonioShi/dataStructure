@@ -13,7 +13,7 @@
 
 void MyTwoWayMergeAlgorithm(SLNode * head1, SLNode * head2, SLNode * head3);//关于我的二路归并算法的函数
 
-int main0919(void)
+int main(void)
 {
     int i;
     SLNode * head1, * head2, * head3;
@@ -54,14 +54,14 @@ void MyTwoWayMergeAlgorithm(SLNode * head1, SLNode * head2, SLNode * head3)
 
     for (; p1->next != NULL && p2->next != NULL ; )
     {
-        p1 = p1->next, p2 = p2->next;
-
-        if (p1->data < p2->data)
+        if (p1->next->data < p2->next->data)
         {
+            p1 = p1->next;
             ListPushHead(head3, p1->data);
         }
         else
         {
+            p2 = p2->next;
             ListPushHead(head3, p2->data);
         }
     }
