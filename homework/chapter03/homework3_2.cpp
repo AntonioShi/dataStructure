@@ -27,7 +27,7 @@ public:
     friend istream &operator>> (istream &in, Chess &che);
 };
 
-int main (void)
+int main1007 (void)
 {
     Chess newChe;
     stack<Chess> checkerboard;
