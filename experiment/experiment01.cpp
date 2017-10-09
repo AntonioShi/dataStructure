@@ -42,7 +42,7 @@ public:
     friend istream &operator>>(istream &in, Polynomial &pol);                 //① 多项式链表建立
 };
 
-int main789(void)
+int main201710092030(void)
 {
     Polynomial pol1, pol2;//定义两个多项式
     cin >> pol1;
