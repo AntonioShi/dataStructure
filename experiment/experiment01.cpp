@@ -47,7 +47,7 @@ public:
 	friend istream &operator>>(istream &in, Polynomial &pol);                 //① 多项式链表建立
 };
 
-int main(void)
+int main101109(void)
 {
 	Polynomial pol1, pol2;//定义两个多项式
 	cout << "请输入第1条二项式(只写系数和指数):" << endl;
