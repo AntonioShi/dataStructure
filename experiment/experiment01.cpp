@@ -32,6 +32,8 @@ class Polynomial
 {
 private:
 	Item head;//这个就作为头结点吧
+	void merger();//合并同类项的函数
+	Polynomial twoWayMerger(Polynomial *pol);//二路归并算法
 public:
 	Polynomial();
 
@@ -87,6 +89,77 @@ Polynomial::~Polynomial()
 
 }
 
+//合并同类项的函数
+void Polynomial::merger()
+{
+	Item *p1 = NULL, *p2 = NULL;
+
+	//遍历所有元素-1
+	for (p1 = head.next; p1 != NULL && p1->next != NULL; p1 = p1->next)
+	{
+		//遍历余下相同的元素
+		for (p2 = p1->next; p2 != NULL && p1->index == p2->index; p2 = p2->next)
+		{
+			//合并同类项
+			p1->coefficient += p2->coefficient;
+			p1->next = p2->next;
+		}
+	}
+}
+
+//二路归并算法
+Polynomial Polynomial::twoWayMerger(Polynomial *pol)
+{
+	Polynomial sumPol;//结果
+	Item *pItem = &sumPol.head;//指向结果的正在处理的结点
+	Item *p1 = &this->head;//1链的处理点
+	Item *p2 = &pol->head;//2链的处理点
+	Item *p = NULL;
+
+	//二路归并算法
+	while (p1->next != NULL && p2->next != NULL)
+	{
+		if (p1->next->index < p2->next->index)        //小的放在前
+		{
+			p1 = p1->next;
+			p = p1;
+		} else//大的放在后
+		{
+			p2 = p2->next;
+			p = p2;
+		}
+
+		//拷贝一个结点p, 并挂到新链表上
+		Item *newItem = new Item();
+		newItem->coefficient = p->coefficient;
+		newItem->index = p->index;
+		newItem->next = NULL;
+		pItem->next = newItem;
+		pItem = newItem;
+	}
+
+	if (p1->next != NULL)
+	{
+		p = p1;
+	} else
+	{
+		p = p2;
+	}
+
+	while (p->next != NULL)
+	{
+		p = p->next;
+		Item *newItem = new Item();//定义新结点
+		newItem->coefficient = p->coefficient;//输入系数
+		newItem->index = p->index;      //输入指数
+		newItem->next = NULL;      //收尾
+		pItem->next = newItem;     //上家指下家
+		pItem = newItem;           //当前指当前
+	}
+
+	return sumPol;
+}
+
 //① 多项式链表建立：以（系数，指数）方式输入项建立多项式，返回所建立的链表的头结点；
 istream &operator>>(istream &in, Polynomial &pol)
 {
@@ -132,53 +205,7 @@ void Polynomial::sort()
 //③ 多项式相加：实现两个多项式相加操作。操作生成一个新的多项式，原有的两个多项式不变，返回生成的多项式的头结点；
 Polynomial Polynomial::operator+(Polynomial &pol)
 {
-	Polynomial sumPol;//结果
-	Item *pItem = &sumPol.head;//指向结果的正在处理的结点
-	Item *p1 = &this->head;//1链的处理点
-	Item *p2 = &pol.head;//2链的处理点
-	Item *p = NULL;
-
-	//二路归并算法
-	while (p1->next != NULL && p2->next != NULL)
-	{
-		//小的放在前
-		if (p1->next->index < p2->next->index)
-		{
-			p1 = p1->next;
-			p = p1;
-		} else
-		{
-			p2 = p2->next;
-			p = p2;
-		}
-
-		Item *newItem = new Item();//定义新结点
-		newItem->coefficient = p->coefficient;//输入系数
-		newItem->index = p->index;      //输入指数
-		newItem->next = NULL;      //收尾
-		pItem->next = newItem;     //上家指下家
-		pItem = newItem;           //当前指当前;
-	}
-
-	if (p1->next != NULL)
-	{
-		p = p1;
-	} else
-	{
-		p = p2;
-	}
-
-	while (p->next != NULL)
-	{
-		p = p->next;
-		Item *newItem = new Item();//定义新结点
-		newItem->coefficient = p->coefficient;//输入系数
-		newItem->index = p->index;      //输入指数
-		newItem->next = NULL;      //收尾
-		pItem->next = newItem;     //上家指下家
-		pItem = newItem;           //当前指当前
-	}
-
+	Polynomial sumPol = twoWayMerger(&pol);//结果
 	return sumPol;
 }
 
@@ -193,53 +220,7 @@ Polynomial Polynomial::operator-(Polynomial &pol)
 		pItem->coefficient = 0 - pItem->coefficient;
 		pItem = pItem->next;
 	}
-
-	Polynomial sumPol;//结果
-	pItem = &sumPol.head;//指向结果的正在处理的结点
-	Item *p1 = &this->head;//1链的处理点
-	Item *p2 = &pol.head;//2链的处理点
-	Item *p = NULL;
-
-	//二路归并算法
-	while (p1->next != NULL && p2->next != NULL)
-	{
-		//小的放在前
-		if (p1->next->index < p2->next->index)
-		{
-			p1 = p1->next;
-			p = p1;
-		} else
-		{
-			p2 = p2->next;
-			p = p2;
-		}
-
-		Item *newItem = new Item();//定义新结点
-		newItem->coefficient = p->coefficient;//输入系数
-		newItem->index = p->index;      //输入指数
-		newItem->next = NULL;      //收尾
-		pItem->next = newItem;     //上家指下家
-		pItem = newItem;           //当前指当前;
-	}
-
-	if (p1->next != NULL)
-	{
-		p = p1;
-	} else
-	{
-		p = p2;
-	}
-
-	while (p->next != NULL)
-	{
-		p = p->next;
-		Item *newItem = new Item();//定义新结点
-		newItem->coefficient = p->coefficient;//输入系数
-		newItem->index = p->index;      //输入指数
-		newItem->next = NULL;      //收尾
-		pItem->next = newItem;     //上家指下家
-		pItem = newItem;           //当前指当前
-	}
+	Polynomial sumPol = twoWayMerger(&pol);//结果
 
 	return sumPol;
 }
@@ -247,10 +228,22 @@ Polynomial Polynomial::operator-(Polynomial &pol)
 //④  多项式的输出；
 ostream &operator<<(ostream &out, Polynomial &pol)
 {
+	pol.merger();
 
 	for (Item *pItem = pol.head.next; pItem != NULL; pItem = pItem->next)
 	{
-		out << pItem->coefficient << "*X^";//输出系数
+		if (pItem->coefficient > 0)
+		{
+			out << pItem->coefficient;
+		} else if (pItem->coefficient < 0)
+		{
+			out << "(" << pItem->coefficient << ")";
+		} else
+		{
+			continue;
+		}
+
+		out << "*X^";//输出系数
 		out << pItem->index;//输出指数
 
 		if (pItem->next != NULL)
