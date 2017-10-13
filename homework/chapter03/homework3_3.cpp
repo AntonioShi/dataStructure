@@ -10,36 +10,49 @@
 
 using namespace std;
 
-//棋盘格
-struct Item
+//矩阵类
+class Matrix
 {
-	int num; //细胞号数
-	bool flag;//是否走过,走过就插false旗
+private:
+	int **Item;
+	int m, n;
+public:
+	Matrix(int m, int n);
+	friend istream &operator>>(istream &in, Matrix &mat);
+	friend ostream &operator<<(ostream &out, Matrix &mat);
 };
 
-int main(void)
+int main101320(void)
 {
-	Item member[11][11];
-
-	for (int i = 1; i <= 10; ++i)
-	{
-		for (int j = 1; j <= 10; ++j)
-		{
-			cin >> member[i][j].num;
-		}
-	}
-
-	for (int i = 1; i <= 10; ++i)
-	{
-		for (int j = 1; j <= 10; ++j)
-		{
-			cout << member[i][j].num << " ";
-		}
-
-		cout << endl;
-	}
+	Matrix mat(10, 10);
 
 	cout << "bfs什么的, 去你的!!!!!!" << endl;
 
 	return 0;
+}
+
+Matrix::Matrix(int m, int n)
+{
+	Item = new int *[m];
+
+	for (int i = 0; i < m; ++i)
+	{
+		Item[m] = new int[n];
+	}
+}
+
+//输入函数重载
+istream &operator>>(istream &in, Matrix &mat)
+{
+
+
+	return in;
+}
+
+//输出函数重载
+ostream &operator<<(ostream &out, Matrix &mat)
+{
+
+
+	return out;
 }
