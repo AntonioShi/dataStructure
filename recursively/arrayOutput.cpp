@@ -8,7 +8,7 @@ using namespace std;
 
 void output(int array[], int n);
 
-int main201710132130(void)
+int main(void)
 {
 	int array[] = {1,2,3,4,5,5,6,7,8,9,0,2,3,4,6,3,5,6,6,7};
 
