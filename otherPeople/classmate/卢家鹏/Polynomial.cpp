@@ -154,7 +154,7 @@ void addPolyn(polynomial &Pa, polynomial &Pb)
 
 
 
-int maintdn()
+int maintdn0()
 {
 
 	polynomial Pa;
