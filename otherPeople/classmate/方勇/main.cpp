@@ -130,25 +130,32 @@ void Destory(Node **head)
 
 Node *sort(Node *head)
 {
-    Node *p = NULL, *q = NULL, *s = NULL;
+    Node *p = NULL, *q = NULL, *s = NULL ,*qL = NULL ;
     for (p = head; p->next != NULL; p = p->next)
     {
-        for (q = p->next; q != NULL; q = q->next)
+        qL = p;
+        for (q = p->next; q != NULL;qL = q,q = q->next)
         {
+            //找到相同指数时，
             if (p->zNum == q->zNum)
             {
-                p->xNum += q->xNum;
-                s = q;
-                q = q->next;
-                free(s);
+                p->xNum += q->xNum;//step1:系数相加
+                s = q;             //step2:s指向要删除的结点
+                q = q->next;       //step3:q指向下一个结点
+                qL->next = q;      //step4:s的上一个的next指向q
+                free(s);           //step5:删除s
+                if(!q)break;
             }
+
         }
+
+        if(p->next == NULL)break;
     }
 
     return head;
 }
 
-int main(void)
+int mainfangrong(void)
 {
     int i, z;
     double x;
