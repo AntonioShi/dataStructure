@@ -20,23 +20,31 @@ class Chess
 private:
     int row;
     int column;
-    int color;
 public:
     friend ostream &operator<< (ostream &out, Chess &che);
 
     friend istream &operator>> (istream &in, Chess &che);
 };
 
-int main1007 (void)
+int main (void)
 {
     Chess newChe;
     stack<Chess> checkerboard;
     stack<Chess> checkerboard2;
-    cout << "请输入行，列，以及颜色（颜色1代表黑，0代表白,0结束输入）:" << endl;
 
+    //输入部分
+    cout << "请输入\"行 列\"（-1悔棋,0结束输入）:" << endl;
     for (int i = 1;; ++i)
     {
-        cout << "第" << i << "步：";
+        cout << "第" << i << "步";
+        if (i % 2 == 1)
+        {
+            cout << "(黑)：";
+        }
+        else
+        {
+            cout << "(白)：";
+        }
 
         try
         {
@@ -46,7 +54,7 @@ int main1007 (void)
         {
             if (x == -1)//-1就是悔棋,弹出
             {
-                i = i - 2;
+                i -= 2;
                 checkerboard.pop();
                 continue;
             }
@@ -55,10 +63,18 @@ int main1007 (void)
                 break;
             }
         }
+        catch (char const* message)
+        {
+            i -= 1;
+            cout << message << endl;
+            continue;
+        }
 
         checkerboard.push(newChe);
     }
 
+
+    //输出部分
     for (int i = 1;!checkerboard.empty(); ++i)
     {
         newChe = checkerboard.top();
@@ -70,7 +86,15 @@ int main1007 (void)
     {
         newChe = checkerboard2.top();
         checkerboard2.pop();
-        cout << "第" << i << "步：";
+        cout << "第" << i << "步";
+        if (i % 2 == 1)
+        {
+            cout << "(黑)：";
+        }
+        else
+        {
+            cout << "(白)：";
+        }
         cout << newChe;
     }
 
@@ -80,8 +104,7 @@ int main1007 (void)
 ostream &operator<< (ostream &out, Chess &che)
 {
     cout << che.row << " ";
-    cout << che.column << " ";
-    cout << che.color << endl;
+    cout << che.column << " " << endl;
 
     return out;
 }
@@ -96,7 +119,11 @@ istream &operator>> (istream &in, Chess &che)
     }
 
     in >> che.column;
-    in >> che.color;
+
+    if (che.row > 16 || che.row < 0 || che.column > 16 || che.row < 0)
+    {
+        throw "\n超过棋盘大小了\n";
+    }
 
     return in;
 }
