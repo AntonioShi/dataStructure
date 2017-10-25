@@ -86,7 +86,7 @@ int count(Matrix &mat)
     int num = 0;
     int cell;//细胞数字
 
-    //接下来就一个一个地找，为了保证每次都有四个方向,所以从1开始
+    //遍历二位数组
     for (int i = 0; i < mat.maxsize; i++)
     {
         for (int j = 0; j < mat.maxsize; j++)
@@ -105,6 +105,7 @@ int count(Matrix &mat)
     return num;
 }
 
+
 void bfs(int **area, int x, int y, int maxsize, int cell)
 {
     int x1[4] = {1, 0, -1, 0}, y1[4] = {0, 1, 0, -1};//利用简单数组表示方向；
@@ -113,7 +114,7 @@ void bfs(int **area, int x, int y, int maxsize, int cell)
     for (int i = 0; i < 4; i++)
     {
         if (x + x1[i] >= 0 && x + x1[i] < maxsize && y + y1[i] >= 0 && y + y1[i] < maxsize/*排除越界的可能*/
-            && area[x + x1[i]][y + y1[i]] == cell/*确认是否是细胞数字*/)
+            && area[x + x1[i]][y + y1[i]] == cell/*确认是否是同一细胞数字*/)
         {
             area[x + x1[i]][y + y1[i]] = 0; //将找到细胞数字置为0防止重复
             bfs(area, x + x1[i], y + y1[i], maxsize, cell);//搜索下一个点
